@@ -40,13 +40,13 @@ public class TileScript : MonoBehaviour
    public void DrawMap()
     {
         collapsed = true;
+        //pick a random tile of the aviable ones
         int pickedArray = Random.Range(0, AviableTiles.Count);
+        //set edges
         Edges = AviableTiles[pickedArray];
+        //set picture
         pickPicture(pickedArray);
-        for(int i=0; i < 4; i++)
-        {
-            Debug.Log(Edges[i]);
-        }
+        
 
     }
     void pickPicture(int pickedArray)

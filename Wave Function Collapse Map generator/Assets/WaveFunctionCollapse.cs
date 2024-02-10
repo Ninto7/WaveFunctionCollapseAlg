@@ -34,20 +34,26 @@ public class WaveFunctionCollapse : MonoBehaviour
     }
     void Collapse(int x, int y)
     {
+        
         amount++;
+        //select a random tile of the aviable ones
         Grid[x, y].GetComponent<TileScript>().DrawMap();
         GameObject collapsing = Grid[x, y];
         //top
         if (y != DM-1)
         {
+            //if top tile exists and is not collapsed
             TileScript topAdjacent = Grid[x, y + 1].GetComponent<TileScript>();
             if (!topAdjacent.collapsed)
             {
+                //go through all possible tiles
                 for(int i =0; i< topAdjacent.AviableTiles.Count; i++)
                 {
+                    //remove tiles that dont fit anymore
                     if(topAdjacent.AviableTiles[i][2] != collapsing.GetComponent<TileScript>().Edges[0])
                     {
                         topAdjacent.AviableTiles.Remove(topAdjacent.AviableTiles[i]);
+                        //go back in the list once
                         i--;
                     }
                 }
@@ -57,14 +63,18 @@ public class WaveFunctionCollapse : MonoBehaviour
         //right
         if (x != DM - 1)
         {
+            //if top tile exists and is not collapsed
             TileScript rightAdjacent = Grid[x+1, y].GetComponent<TileScript>();
             if (!rightAdjacent.collapsed)
             {
+                //go through all possible tiles
                 for (int i = 0; i < rightAdjacent.AviableTiles.Count; i++)
                 {
+                    //remove tiles that dont fit anymore
                     if (rightAdjacent.AviableTiles[i][3] != collapsing.GetComponent<TileScript>().Edges[1])
                     {
                         rightAdjacent.AviableTiles.RemoveAt(i);
+                        //go back in the list once
                         i--;
                     }
                 }
@@ -74,14 +84,18 @@ public class WaveFunctionCollapse : MonoBehaviour
         //unten
         if (y != 0)
         {
+            //if top tile exists and is not collapsed
             TileScript bottomAdjacent = Grid[x, y-1].GetComponent<TileScript>();
             if (!bottomAdjacent.collapsed)
             {
+                //go through all possible tiles
                 for (int i = 0; i < bottomAdjacent.AviableTiles.Count; i++)
                 {
+                    //remove tiles that dont fit anymore
                     if (bottomAdjacent.AviableTiles[i][0] != collapsing.GetComponent<TileScript>().Edges[2])
                     {
                         bottomAdjacent.AviableTiles.RemoveAt(i);
+                        //go back in the list once
                         i--;
                     }
                 }
@@ -91,14 +105,18 @@ public class WaveFunctionCollapse : MonoBehaviour
         //left
         if (x != 0)
         {
+            //if top tile exists and is not collapsed
             TileScript leftAdjacent = Grid[x - 1, y].GetComponent<TileScript>();
             if (!leftAdjacent.collapsed)
             {
+                //go through all possible tiles
                 for (int i = 0; i < leftAdjacent.AviableTiles.Count; i++)
                 {
+                    //remove tiles that dont fit anymore
                     if (leftAdjacent.AviableTiles[i][1] != collapsing.GetComponent<TileScript>().Edges[3])
                     {
                         leftAdjacent.AviableTiles.RemoveAt(i);
+                        //go back in the list once
                         i--;
                     }
                 }
@@ -109,9 +127,11 @@ public class WaveFunctionCollapse : MonoBehaviour
 
     void Evaluate()
     {
+        //if not all tiles are set
         if (amount < DM * DM)
         {
             List<GameObject> copyGrid = new();
+            //add all not collapsed tiles to a List
             for (int i = 0; i < DM; i++)
             {
                 for (int j = 0; j < DM; j++)
@@ -122,7 +142,7 @@ public class WaveFunctionCollapse : MonoBehaviour
                     }
                 }
             }
-
+            //sort algorith based on aviable tiles amount
             for (int y = 0; y < copyGrid.Count - 1; y++)
             {
                 GameObject n1 = copyGrid[y];
@@ -135,7 +155,7 @@ public class WaveFunctionCollapse : MonoBehaviour
                     y = -1;
                 }
             }
-
+            //collapse the tile with the least possible tiles
             Collapse(copyGrid[0].GetComponent<TileScript>().x, copyGrid[0].GetComponent<TileScript>().y);
 
         }
@@ -144,6 +164,7 @@ public class WaveFunctionCollapse : MonoBehaviour
     
    void DrawLocation()
     {
+        //create a simple grid of tiles
         for(int i=0; i < DM; i++)
         {
             for(int j = 0; j < DM; j++)
